@@ -1,0 +1,50 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $users = [
+            [
+                'name' => 'Dwi Mutiara',
+                'email' => 'dwi@gmail.com',
+                'password' => bcrypt('password'),
+                'role' => 'superadmin',
+            ],
+            [
+                'name' => 'John Doe',
+                'email' => 'admin@gmail.com',
+                'role' => 'admin',
+                'nim' => null,
+            ],
+            [
+                'name' => 'Jane Student',
+                'email' => 'student@gmail.com',
+                'role' => 'student',
+                'nim' => '1234567890',
+            ],
+        ];
+
+        foreach ($users as $user) {
+            if (User::where('email', $user['email'])->exists()) {
+                continue;
+            }
+
+            User::factory()->create([
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role'],
+                'nim' => $user['nim'] ?? null,
+            ]);
+        }
+    }
+}
